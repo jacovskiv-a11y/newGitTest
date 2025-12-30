@@ -1,0 +1,142 @@
+<head>
+<style>
+button {position:absolute}
+div
+  input {
+  position: absolute;
+  left: 20px;
+  width: 190px;
+}
+</style>
+<button style="width: 50px;height: 50px;top: 40px;left: 20px" onClick="Button1Press()">1</button>
+<button style="width: 50px;height: 50px;top: 40px;left: 80px" onClick="Button2Press()">2</button>
+<button style="width: 50px;height: 50px;top: 40px;left: 140px" onClick="Button3Press()">3</button>
+<button style="width: 50px;height: 50px;top: 100px;left: 20px" onClick="Button4Press()">4</button>
+<button style="width: 50px;height: 50px;top: 100px;left: 80px" onClick="Button5Press()">5</button>
+<button style="width: 50px;height: 50px;top: 100px;left: 140px" onClick="Button6Press()">6</button>
+<button style="width: 50px;height: 50px;top: 160px;left: 20px" onClick="Button7Press()">7</button>
+<button style="width: 50px;height: 50px;top: 160px;left: 80px" onClick="Button8Press()">8</button>
+<button style="width: 50px;height: 50px;top: 160px;left: 140px" onClick="Button9Press()">9</button>
+<button style="width: 50px;height: 50px;top: 220px;left: 20px" onClick="Button10Press()">0</button>
+<button style="width: 50px;height: 50px;top: 220px;left: 80px" onClick="Button11Press()">.</button>
+<button style="width: 50px;height: 50px;top: 220px;left: 140px" onClick="Button12Press()">+</button>
+<button style="width: 50px;height: 50px;top: 40px;left: 200px" onClick="Button13Press()">C</button>
+<button style="width: 50px;height: 50px;top: 100px;left: 200px" onClick="Button14Press()">*</button>
+<button style="width: 50px;height: 50px;top: 160px;left: 200px" onClick="Button15Press()">/</button>
+<button style="width: 50px;height: 50px;top: 220px;left: 200px" onClick="Button16Press()">-</button>
+<button style="width: 230px;height: 50px;top: 280px;left: 20px" onClick="Button16Press()">=</button>
+<div>
+<input style="top: 20px;left: 20 type="text" size="54" id="id1"</input>
+</div>
+</head>
+<body>
+<script>
+  var number="";
+  var number1="";
+  var operac="";
+  document.getElementById('id1').value='';
+
+  function ZadadiOperacija(s){
+    if (operac!="") {
+      if (operac=="+") {
+        number1=String(Number(number1)+Number(number));
+        document.getElementById('id1').value=number1;
+        number="";
+      }   
+      if (operac=="-") {
+        number1=String(Number(number1)-Number(number));
+        document.getElementById('id1').value=number1;
+        number="";
+      }   
+      if (operac=="*") {
+        number1=String(Number(number1)*Number(number));
+        document.getElementById('id1').value=number1;
+        number="";
+      }   
+      if (operac=="/") {
+        number1=String(Number(number1)/Number(number));
+        document.getElementById('id1').value=number1;
+        number="";
+      }   
+    } else {
+      number1=number;
+      number="";
+    }
+    if (s=="=") {
+      operac="";
+    } else {
+      operac=s;
+    }
+  }
+
+  function Button1Press() {
+    number=number+"1";
+    document.getElementById('id1').value=number;
+  }
+
+  function Button2Press() {
+    number=number+"2";
+    document.getElementById('id1').value=number;
+  }
+
+  function Button3Press() {
+    number=number+"3";
+    document.getElementById('id1').value=number;
+  }
+
+  function Button4Press() {
+    number=number+"4";
+    document.getElementById('id1').value=number;
+  }
+
+  function Button5Press() {
+    number=number+"5";
+    document.getElementById('id1').value=number;
+  }
+
+  function Button6Press() {
+    number=number+"6";
+    document.getElementById('id1').value=number;
+  }
+
+  function Button7Press() {
+    number=number+"7";
+    document.getElementById('id1').value=number;
+  }
+
+  function Button8Press() {
+    number=number+"8";
+    document.getElementById('id1').value=number;
+  }
+
+  function Button9Press() {
+    number=number+"9";
+    document.getElementById('id1').value=number;
+  }
+
+  function Button10Press() {
+    number=number+"0";
+    document.getElementById('id1').value=number;
+  }
+
+  function Button12Press() {
+    ZadadiOperacija("+");
+  }
+  function Button13Press() {
+    number="";
+    document.getElementById('id1').value=number;
+  }
+  function Button14Press() {
+    ZadadiOperacija("*");
+  }
+  function Button15Press() {
+    ZadadiOperacija("/");
+  }
+  function Button16Press() {
+    ZadadiOperacija("-");
+  }
+  function Button17Press() {
+    ZadadiOperacija("=");
+  }
+</script>
+</body>

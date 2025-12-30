@@ -1,0 +1,217 @@
+<head>
+  <title>Vele Pong</title>
+</head>
+<body>
+	<button onclick="NovaIgra()" width="90" height="20"">New Game</button>
+	Vele Pong
+	<p></p>
+	<canvas id="myCanvas" width="900" height="640"></canvas>
+	<img style="display: none;" src="IMPR1_3_obr2_900x640.bmp" id="image1"></img>
+	<img style="display: none;" src="p.png" id="Pongot1" class="transparent-image" alt=""></img>
+	<audio id="audio_1" preload loop autoplay>
+		<source src="Cub3.mp3">
+	</audio>
+<style>
+  img.transparent {
+    opacity: 0.4;
+}
+</style>
+<script>
+
+	var drawing = document.getElementById("myCanvas");
+	var con = drawing.getContext("2d");
+	var img=document.getElementById("image1");
+	var img2=document.getElementById("Pongot1");
+	var playy=document.getElementById("audio_1");
+
+	var x=0;
+	var y=0;
+	var xn=Math.trunc((900-32)/32);
+	var yn=0;
+	var yyn=Math.trunc(640/2);
+	var x1=0;
+	var y1=0;
+	var yy=Math.trunc(640/2);
+	var tim=0;
+	var yspeed=10;
+	var xmax=900;
+	var ymax=640;
+	var xt=100;
+	var yt=Math.trunc(640/2);
+	var dx=10;
+	var dy=10;
+	var twidth=10;
+	var theight=10;
+	var kraj=1;
+	var score=0;
+	var level=0;
+
+	document.onkeydown = checkKey;
+
+
+	function checkKey(e) {
+
+		e = e || window.event;
+
+		if (e.keyCode == '38') {
+        // up arrow
+			if (yy>32+2) {
+				yy=yy-yspeed;
+			}
+		}
+		else if (e.keyCode == '40') {
+        // down arrow
+			if (yy<640-(4*32)) {
+				yy=yy+yspeed;
+			}
+		}
+		else if (e.keyCode == '37') {
+       // left arrow
+		}
+		else if (e.keyCode == '39') {
+       // right arrow
+		}
+
+	}
+
+function NovaIgra() {
+	playy.play();
+
+	x=0;
+	y=0;
+	x1=0;
+	y1=0;
+	yy=Math.trunc(640/2);
+	tim=0;
+	yspeed=10;
+	xmax=900;
+	ymax=640;
+	xt=100;
+	yt=Math.trunc(640/2);
+	dx=10;
+	dy=10;
+	twidth=10;
+	theight=10;
+	kraj=0;
+	score=0;
+	level=0;
+	kraj=0;
+}
+
+function pobeduvas() {
+	x=0;
+	y=0;
+	x1=0;
+	y1=0;
+	yy=Math.trunc(640/2);
+	tim=0;
+	yspeed=10;
+	xmax=900;
+	ymax=640;
+	xt=100;
+	yt=Math.trunc(640/2);
+	dx=10;
+	dy=10;
+	twidth=10;
+	theight=10;
+	kraj=0;
+}
+
+var xp = setInterval(function() {
+
+    if (tim>5) {
+		con.drawImage(img,0,0);
+		con.drawImage(img2,100,yy);
+
+		if (kraj==1) {
+			con.fillStyle = "black";
+			con.fillRect(0,0,900,32);
+
+			con.fillStyle = "white";
+			con.font = "30px Arial";
+			con.fillText("Press on button New Game",230,32);
+		}
+		if (kraj==0) {
+
+		con.fillStyle = "white";
+		con.fillRect(x*32,yy,32,32*4);
+		con.fillStyle = "black";
+		con.fillRect(x*32+1,yy+1,32-2,32*4-2);
+
+		con.fillStyle = "white";
+		con.fillRect(xn*32,yyn,32,32*4);
+		con.fillStyle = "black";
+		con.fillRect(xn*32+1,yyn+1,32-2,32*4-2);
+
+		con.fillStyle = "black";
+		con.fillRect(xt,yt,twidth,theight);
+		con.fillStyle = "white";
+		con.fillRect(xt+1,yt+1,twidth-2,theight-2);
+
+		con.fillRect(0,32,900,2);
+
+		con.fillStyle = "black";
+		con.fillRect(0,0,900,32);
+
+		con.fillStyle = "white";
+		con.font = "30px Arial";
+		con.fillText("Score:"+String(score),0,32);
+		con.fillText("Level:"+String(level),230,32);
+/*
+		for (y=0;y<4;y++){
+			for (x=0;x<1;x++){
+				con.fillStyle = "black";
+				con.fillRect(x*32+1,y*32+yy+1,32-2,32-2);
+			}
+		}
+*/
+
+		tim=0;
+		// yy=yy+3;
+		y1=Math.trunc(yy/32);
+		
+		xt=xt+dx;
+		yt=yt+dy;
+		
+		if ((yt<yyn) && (dy<0)) {
+			yyn=yyn-120;
+		}
+		
+		if ((yt>Math.trunc(yyn+32*4)) && (dy>0)) {
+			yyn=yyn+120;
+		}
+		
+		if ((xt<32) && (yt>yy) && (yt<yy+32*4)) {
+			score=score+10;
+			dx=-dx;
+		}
+		
+		if ((xt>Math.trunc(xn*32-32)) && (yt>yyn) && (yt<yyn+32*4)) {
+			dx=-dx;
+		}
+		
+		if (xt>Math.trunc(xn*32+30)) {
+			score=score+100;
+			pobeduvas();
+		}
+		
+		if (xt<0) {
+			kraj=1;
+		}
+		
+		if (xt>xmax-twidth) {
+			dx=-dx;
+		}
+		if ((yt<32+2) || (yt>ymax-theight)) {
+			dy=-dy;
+		}
+		
+		}
+   } else {
+		tim=tim+1;
+	}
+/*		document.write("<br>");*/
+}, 10);
+
+	</script>
+</body>

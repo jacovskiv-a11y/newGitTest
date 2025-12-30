@@ -1,0 +1,745 @@
+<head>
+  <title>Vele Tetris</title>
+</head>
+<body>
+<div style="text-align: center">
+	<button style="height:20px;width:90px" onclick="NovaIgra()">New Game</button>
+	p-Pause,left-Move left,right-Move right,up-rotate,down-speed
+	<p></p>
+	<canvas id="myCanvas" width="900" height="560"></canvas>
+</div>
+	<img style="display: none;" src="IMPR1_3_obr2_900x640.bmp" id="image1"></img>
+	<p></p>
+	<audio id="audio_1" preload loop autoplay>
+		<source src="Tet1.mp3">
+	</audio>
+	<audio id="audio_2" preload autoplay>
+		<source src="Attfiole.mp3">
+	</audio>
+	<audio id="audio_3" preload autoplay>
+		<source src="Boum.mp3">
+	</audio>
+<script>
+    var x,y;
+
+    var colorss = [
+      "rgb(0, 0, 0)",
+      "rgb(255, 0, 0)",
+      "rgb(255, 255, 0)",
+      "rgb(255, 0, 255)",
+      "rgb(127, 0, 0)",
+      "rgb(127, 127, 0)",
+      "rgb(127, 0, 127)",
+      "rgb(127, 127, 127)"
+	];
+/*					 1		 2	 	 3		 4		 5		 6		 7			*/
+/*                   0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3  	*/
+	var tetrwidth = [3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,1,4,1,4,2,2,2,2];
+	var tetrheight =[2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,4,1,4,1,2,2,2,2];
+	var tetr = [
+    [
+      [0,1,0,0],
+      [1,1,1,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [0,1,0,0],
+      [1,1,0,0],
+      [0,1,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,1,0],
+      [0,1,0,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,0,0,0],
+      [1,1,0,0],
+      [1,0,0,0],
+      [0,0,0,0]
+    ], [
+      [0,0,1,0],
+      [1,1,1,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,0,0],
+      [0,1,0,0],
+      [0,1,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,1,0],
+      [1,0,0,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,0,0,0],
+      [1,0,0,0],
+      [1,1,0,0],
+      [0,0,0,0]
+    ], [
+      [1,0,0,0],
+      [1,1,1,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,0,0],
+      [1,0,0,0],
+      [1,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,1,0],
+      [0,0,1,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [0,1,0,0],
+      [0,1,0,0],
+      [1,1,0,0],
+      [0,0,0,0]
+    ], [
+      [0,1,1,0],
+      [1,1,0,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,0,0,0],
+      [1,1,0,0],
+      [0,1,0,0],
+      [0,0,0,0]
+    ], [
+      [0,1,1,0],
+      [1,1,0,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,0,0,0],
+      [1,1,0,0],
+      [0,1,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,0,0],
+      [0,1,1,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [0,1,0,0],
+      [1,1,0,0],
+      [1,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,0,0],
+      [0,1,1,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [0,1,0,0],
+      [1,1,0,0],
+      [1,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,0,0,0],
+      [1,0,0,0],
+      [1,0,0,0],
+      [1,0,0,0]
+    ], [
+      [1,1,1,1],
+      [0,0,0,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,0,0,0],
+      [1,0,0,0],
+      [1,0,0,0],
+      [1,0,0,0]
+    ], [
+      [1,1,1,1],
+      [0,0,0,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,0,0],
+      [1,1,0,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,0,0],
+      [1,1,0,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,0,0],
+      [1,1,0,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ], [
+      [1,1,0,0],
+      [1,1,0,0],
+      [0,0,0,0],
+      [0,0,0,0]
+    ] ]; 
+
+	var drawing = document.getElementById("myCanvas");
+	var con = drawing.getContext("2d");
+	var img=document.getElementById("image1");
+	var playy=document.getElementById("audio_1");
+	var play_sound2=document.getElementById("audio_2");
+	var play_sound3=document.getElementById("audio_3");
+ /* 
+	var audio = new Audio('Cub3.mp3');
+	audio.play();  
+	
+	$("audio_1").trigger('load');	
+
+    $("audio_1").trigger('play');	
+	playy.play();
+*/
+/*
+  con.fillStyle = "red";
+  con.strokeStyle = "green";
+  con.lineWidth = "5";
+  con.fillRect(10, 10, 180, 80);
+  con.strokeRect(10, 100, 180, 80);/*	ctx.fillRect(20,20,150,100);
+*/
+	/*
+	var tet=2;
+	var rot=2;
+	*/
+/*	var tett=[11,20];*/
+/*	var tett=[];*/
+	var tett = [            [0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0]];
+						 
+	var leftt=Math.trunc(450-32*11/2);
+	var tet=Math.trunc(Math.random()*7);
+	var rot=Math.trunc(Math.random()*4);
+	var colorr=Math.trunc(Math.random()*7)+1;
+	var ntet=Math.trunc(Math.random()*7);
+	var nrot=Math.trunc(Math.random()*4);
+	var ncolorr=Math.trunc(Math.random()*7)+1;
+	var srot=rot;
+	var tim=0;
+	var yy=-tetrheight[tet*4+rot]*32;
+	var x1=4;
+	var y1=yy/32;
+	var x=0;
+	var y=0;
+	var yq=0;
+	var yw=0;
+	var score=0;
+	var level=1;
+	var zabrzano=0;
+	var speed=5;
+	var proveriDopir=0;
+	var popolnatRed=0;
+	var imaPopolnatRed=0;
+	var paused=1;
+	var kraj=0;
+	var startt=0;
+	var NewStart=0;
+	var yu=28;
+	var xu=32;
+
+
+/*
+	for(y=0;y<20;y++){
+	  for(x=0;x<11;x++){
+		tett[y][x]=0;
+	  }
+	}
+*/
+/*
+	myAudio = new Audio('Cub3.mp3'); 
+	myAudio.addEventListener('ended', function() {
+		this.currentTime = 0;
+		this.play();
+	}, false);
+	
+	myAudio.play();
+*/
+/*
+	bgSound = new Audio("Cub3.mp3");
+	bgSound.loop = true;
+	bgSound.play();
+*/	
+/*	
+	var music = new Howl({
+    urls: ['Cub3.mp3'],
+    autoplay: false,
+    loop: true
+	});
+	var mute = false;
+*/  
+/*
+    window.onload=function(){
+      document.getElementById("my_audio").play();
+    }
+*/
+/*
+	createjs.Sound.on("fileload", handleLoad);  
+	createjs.Sound.registerSound("Cub3.mp3", "myID", 3);  
+	function handleLoad(event) {  
+	createjs.Sound.play("myID");  
+	// store off AbstractSoundInstance for controlling  
+	var myInstance = createjs.Sound.play("myID", {interrupt: createjs.Sound.INTERRUPT_ANY, loop:-1});  
+	}  
+*/
+/*
+	document.getElementById('audio_1').play();
+
+	document.getElementById('audio_1').addEventListener('ended', function(){
+		this.currentTime = 0;
+		this.pause();
+		document.getElementById('audio_1').play();
+	}, false);
+*/
+/*
+	var song;
+
+	song = loadSound('Cub3.mp3');
+
+	song.loop();
+	song.play();
+*/
+	function BrisiPopolnatiRedovi() {
+		
+		imaPopolnatRed=0;
+		
+		for(y=0;y<20;y++){
+			
+			popolnatRed=1;
+			
+			for(x=0;x<11;x++){
+				if (tett[y][x]==0) {
+					popolnatRed=0;
+				}
+			}
+			if (popolnatRed==1) {
+				imaPopolnatRed=1;
+				
+				for (yq=y;yq>=1;yq=yq-1) {
+					for (x=0;x<=10;x++) {
+						tett[yq][x]=tett[yq-1][x];
+					}
+				}
+				for (x=0;x<=10;x++) {
+					tett[0][x]=0;
+				}
+				
+				play_sound3.play();
+
+			}
+		}
+	}
+
+	function newtetr() {
+
+		zabrzano=0;
+
+		tet=ntet;
+		rot=nrot;
+		colorr=ncolorr;
+		ntet=Math.trunc(Math.random()*7);
+		nrot=Math.trunc(Math.random()*4);
+		ncolorr=Math.trunc(Math.random()*7)+1;
+		srot=rot;
+		tim=0;
+		yy=-tetrheight[tet*4+rot]*yu;
+		x1=4;
+		y1=Math.trunc(yy/yu);
+	}
+	
+	document.onkeydown = checkKey;
+
+/*
+	function proveriDopirNaKvadrat(xx,yy) {
+		if (tett[yy][xx]!=0) {
+			proveriDopir=1;
+		}
+	}
+*/	
+	function proveriGoDopirot() {
+		proveriDopir=0;
+		for (y=0;y<4;y++){
+			for (x=0;x<4;x++){
+				if (tetr[tet*4+rot][y][x]!=0) {
+					if (y+y1>=0) {
+						if (tett[y+y1+1][x+x1]!=0) {
+							proveriDopir=1;
+						}
+					}
+/*					proveriDopirNaKvadrat(x+x1,y+y1);*/
+				}
+			}
+		}
+	}
+	
+	function checkKey(e) {
+
+		e = e || window.event;	
+
+		zabrzano=0;
+
+		if (e.keyCode == '80') {
+        // space
+			if (paused==0) {
+				paused=1;
+			} else {
+				paused=0;
+			}
+
+		}
+
+		if ((e.keyCode == '38') && (paused==1) && (kraj==0)) {
+        // up arrow
+			srot=rot;
+			rot=rot+1;
+			rot=rot%4;
+			if ((tetrwidth[tet*4+rot]+x1)>11) {
+				rot=srot;
+			}
+		}
+		else if ((e.keyCode == '40') && (paused==1) && (kraj==0)) {
+        // down arrow
+			zabrzano=1;
+		}
+		else if ((e.keyCode == '37') && (paused==1) && (kraj==0)) {
+       // left arrow
+			if (x1>0) {
+				x1=x1-1;
+				proveriGoDopirot();
+				if (proveriDopir==1) {
+					x1=x1+1;
+				}
+			}
+		}
+		else if ((e.keyCode == '39') && (paused==1) && (kraj==0)) {
+       // right arrow
+			if (tetrwidth[tet*4+rot]+x1<11) {
+				x1=x1+1;
+				proveriGoDopirot();
+				if (proveriDopir==1) {
+					x1=x1-1;
+				}
+			}
+		}
+	}
+
+function NacrtajTabela() {
+
+		con.beginPath();		
+
+		con.strokeStyle = "black";
+
+		con.moveTo(leftt,0);
+		
+		con.lineTo(leftt+310,0);		
+		con.lineTo(leftt+310,600);		
+		con.lineTo(leftt,600);		
+		con.lineTo(leftt,0);		
+
+		con.stroke();
+
+		con.beginPath();		
+
+		con.strokeStyle = "white";
+
+		con.moveTo(leftt+1,1);
+		
+		con.lineTo(leftt+310-1,1);		
+		con.lineTo(leftt+310-1,600-1);		
+		con.lineTo(leftt+1,600-1);		
+		con.lineTo(leftt+1,1);		
+
+		con.stroke();
+
+		for(y=0; y<=19; y++) {
+			for(x=0; x<=10; x++) {
+				if(tett[y][x]==0) {
+					//con.fillStyle = "black";
+					//con.fillRect(leftt+x*yu,y*yu,yu,yu);
+				} else {
+					//con.fillStyle = "black";
+					//con.fillRect(leftt+x*yu,y*yu,yu,yu);
+					con.fillStyle = "white";
+					//con.fillRect(leftt+x*yu+2,y*yu+2,yu-2,yu-2);
+					con.fillRect(leftt+x*yu+2,y*yu+2,yu-4,yu-4);
+					con.fillStyle = colorss[tett[y][x]];
+					//con.fillRect(leftt+x*yu+4,y*yu+4,yu-4,yu-4);
+					con.fillRect(leftt+x*yu+4,y*yu+4,yu-8,yu-8);
+				}
+			}
+		}
+}
+
+function NacrtajTetris() {
+
+		for (y=0;y<4;y++){
+			for (x=0;x<4;x++){
+				if (tetr[tet*4+rot][y][x]!=0) {
+					//con.fillStyle = "black";
+					//con.fillRect(leftt+(x+x1)*yu,y*yu+yy,yu,yu);
+					con.fillStyle = "white";
+					//con.fillRect(leftt+(x+x1)*yu+2,y*yu+yy+2,yu-2,yu-2);
+					con.fillRect(leftt+(x+x1)*yu+2,y*yu+yy+2,yu-4,yu-4);
+					con.fillStyle = colorss[colorr];
+					//con.fillRect(leftt+(x+x1)*yu+4,y*yu+yy+4,yu-4,yu-4);
+					con.fillRect(leftt+(x+x1)*yu+4,y*yu+yy+4,yu-8,yu-8);
+				}
+			}
+		}
+}
+
+function NacrtajSledenTetris() {
+
+		for (y=0;y<4;y++){
+			for (x=0;x<4;x++){
+				if (tetr[ntet*4+nrot][y][x]!=0) {
+					con.fillStyle = "black";
+					con.fillRect(leftt+x*10+360,260+y*10,10,10);
+					con.fillStyle = "white";
+					//con.fillRect(leftt+x*10+360+1,260+y*10+1,10-1,10-1);
+					con.fillRect(leftt+x*10+360+1,260+y*10+1,10-2,10-2);
+					con.fillStyle = colorss[ncolorr];
+					//con.fillRect(leftt+x*10+360+2,260+y*10+2,10-2,10-2);
+					con.fillRect(leftt+x*10+360+2,260+y*10+2,10-4,10-4);
+				} else {
+					con.fillStyle = "black";
+					con.fillRect(leftt+x*10+360,260+y*10,10,10);
+				}
+			}
+		}
+}
+
+function NovaIgra() {
+		playy.play();
+
+		leftt=Math.trunc(450-32*11/2);
+		tet=Math.trunc(Math.random()*7);
+		rot=Math.trunc(Math.random()*4);
+		colorr=Math.trunc(Math.random()*7)+1;
+		ntet=Math.trunc(Math.random()*7);
+		nrot=Math.trunc(Math.random()*4);
+		ncolorr=Math.trunc(Math.random()*7)+1;
+		srot=rot;
+		tim=0;
+		yy=-tetrheight[tet*4+rot]*32;
+		x1=4;
+		y1=Math.trunc(yy/yu);
+		x=0;
+		y=0;
+		yq=0;
+		score=0;
+		level=1;
+		zabrzano=0;
+		speed=5;
+		proveriDopir=0;
+		popolnatRed=0;
+		imaPopolnatRed=0;
+		paused=1;
+		kraj=0;
+
+		for(y=0;y<20;y++){
+			for(x=0;x<11;x++){
+				tett[y][x]=0;
+			}
+		}
+		newtetr();
+}
+
+var xp = setInterval(function() {
+	if (startt==0) {
+/*
+		NovaIgra();
+*/
+		startt=1;
+		kraj=1;
+	}
+/*    var tetrs = tetr[0];*/
+/*	var sp = new String("O");*/
+/*	var tet=new arrey[11][20]; */
+
+	if (zabrzano==0) {
+		speed=Math.trunc(6-level/2);
+	} else {
+		speed=0;
+	}
+	
+	if (kraj==1) {
+		con.drawImage(img,0,0);
+		con.fillStyle = "white";
+		con.font = "30px Arial";
+		con.fillText("Vele Tetris",leftt+360,50);
+		con.fillStyle = "white";
+		con.font = "20px Arial";
+		if (NewStart==1) {
+			con.fillText("Game over.",leftt+360,110+100);
+		}
+		con.fillText("For Start...",leftt+360,130+100);
+		con.fillText("Press <New Game>.",leftt+360,150+100);
+
+		NacrtajTabela();
+//		NacrtajTetris();
+		NacrtajSledenTetris();
+	}
+
+    if ((tim>speed) && (kraj==0)) {
+	
+		NewStart=1;
+		level=Math.trunc(score/100+1);
+		
+		con.drawImage(img,0,0);
+		con.fillStyle = "white";
+		con.font = "30px Arial";
+		con.fillText("Vele Tetris",leftt+360,50);
+		con.fillText("Level:"+String(level),leftt+360,50+100);
+		con.fillText("Score:"+String(score),leftt+360,80+100);
+
+		con.fillText("Next:",leftt+360,150+100);
+	
+	if ((paused==0) && (kraj==0)) {
+		con.fillText("paused!",leftt+360,110+100);
+		
+		NacrtajTabela();
+		NacrtajTetris();
+		NacrtajSledenTetris();
+	}
+
+	if ((paused==1) && (kraj==0)) {
+		con.fillText("Go!",leftt+360,110+100);
+
+		NacrtajTabela();
+/*
+		con.fillStyle = "black";
+		con.fillRect(0*yu,0*yu,10*yu+yu,19*yu+yu);
+*/
+/*
+		for(var y=0; y<=3; y++) {
+			for(var x=0; x<=3; x++) {
+*/
+		NacrtajTetris();
+		NacrtajSledenTetris();
+/*				}else {*/
+/*
+					con.fillStyle = "black";
+					con.fillRect((x+x1)*yu,y*yu+yy,(x+x1)*yu+yu,y*yu+yu+yy);
+*/
+/*
+				}
+			}
+		}
+*/
+		
+		if	(y1<0) {
+			proveriDopir=0;
+			for (y=0;y<4;y++){
+				for (x=0;x<4;x++){
+					if (tetr[tet*4+rot][y][x]!=0) {
+						if (y+y1>=0) {
+/*							yw=Math.trunc(y+yy/yu)-1;*/
+/*							if ((yw>=0) && (tett[yw][x+x1]!=0)) {*/
+							if (tett[y+y1][x+x1]!=0) {
+								proveriDopir=1;
+							}
+						}
+/*					proveriDopirNaKvadrat(x+x1,y+y1);*/
+					}
+				}
+			}
+			if (proveriDopir==1) {
+				leftt=Math.trunc(450-32*11/2);
+				tet=Math.trunc(Math.random()*7);
+				rot=Math.trunc(Math.random()*4);
+				colorr=Math.trunc(Math.random()*7)+1;
+				ntet=Math.trunc(Math.random()*7);
+				nrot=Math.trunc(Math.random()*4);
+				ncolorr=Math.trunc(Math.random()*7)+1;
+				srot=rot;
+				tim=0;
+				yy=-tetrheight[tet*4+rot]*yu;
+				x1=4;
+				y1=Math.trunc(yy/yu);
+				x=0;
+				y=0;
+				yq=0;
+				score=0;
+				level=1;
+				zabrzano=0;
+				speed=5;
+				proveriDopir=0;
+				popolnatRed=0;
+				imaPopolnatRed=0;
+				paused=1;
+
+				for(y=0;y<20;y++){
+					for(x=0;x<11;x++){
+						tett[y][x]=0;
+					}
+				}
+				kraj=1;
+			}
+		}
+
+		if ((yy+tetrheight[tet*4+rot]*yu)>=20*yu) {
+			for (y=0;y<4;y++){
+				for (x=0;x<4;x++){
+					if (tetr[tet*4+rot][y][x]!=0) {
+						tett[Math.trunc(y+yy/yu)][x+x1]=colorr;
+					}	
+				}
+			}
+		    play_sound2.play();
+			newtetr();
+		}
+
+		proveriGoDopirot();
+		if (proveriDopir!=0) {
+			if (y1>=0) {
+				for (y=0;y<4;y++){
+					for (x=0;x<4;x++){
+						if (tetr[tet*4+rot][y][x]!=0) {
+							tett[Math.trunc(y+yy/yu)][x+x1]=colorr;
+						}	
+					}
+				}
+		    play_sound2.play();
+			newtetr();
+			}
+		}
+		
+		BrisiPopolnatiRedovi();
+
+		if (imaPopolnatRed==1) {
+			score=score+10;
+		}
+
+		tim=0;
+		yy=yy+6;
+		y1=Math.trunc(yy/yu);
+	}
+	} else {
+		tim=tim+1;
+	}
+/*		document.write("<br>");*/
+}, 10);
+
+	</script>
+</body>
